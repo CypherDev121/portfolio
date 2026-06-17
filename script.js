@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const overlay = document.getElementById('enter-overlay');
     const mainContent = document.getElementById('main-content');
     const bgMusic = document.getElementById('bg-music');
+    const bgVideo = document.getElementById('bg-video');
     const typewriterText = document.getElementById('typewriter-text');
     const dynamicIsland = document.getElementById('dynamic-island');
     const playPauseBtn = document.getElementById('play-pause-btn');
@@ -16,11 +17,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Enter Site Logic ---
     enterBtn.addEventListener('click', () => {
-        // Attempt to play music
+        // Attempt to play music and video in sync
         bgMusic.volume = 0.4;
+        bgMusic.currentTime = 0;
+        if (bgVideo) bgVideo.currentTime = 0;
         bgMusic.play().catch(e => {
             console.warn("Audio play failed, the browser might have blocked it.", e);
         });
+        if (bgVideo) bgVideo.play();
 
         // Add a class to button for animation
         enterBtn.style.transform = 'scale(0.95)';
@@ -90,11 +94,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Dynamic Island Logic ---
     playPauseBtn.addEventListener('click', () => {
         if (bgMusic.paused) {
+            if (bgVideo) bgVideo.currentTime = bgMusic.currentTime;
             bgMusic.play();
+            if (bgVideo) bgVideo.play();
             playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
             visualizer.classList.remove('paused');
         } else {
             bgMusic.pause();
+            if (bgVideo) bgVideo.pause();
             playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
             visualizer.classList.add('paused');
         }
