@@ -1,0 +1,107 @@
+.admin-container {
+    max-width: 600px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.admin-section {
+    margin-bottom: 25px;
+    background: rgba(255, 255, 255, 0.02);
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.admin-section h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+    color: #00ffcc;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.input-group label {
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+    color: #ccc;
+}
+
+.input-group input, .input-group textarea {
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    padding: 10px;
+    color: #fff;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.input-group input:focus, .input-group textarea:focus {
+    border-color: #00ffcc;
+}
+
+.admin-btn {
+    background: linear-gradient(135deg, rgba(0, 255, 204, 0.2) 0%, rgba(0, 102, 255, 0.2) 100%);
+    border: 1px solid rgba(0, 255, 204, 0.3);
+    padding: 12px 24px;
+    color: #fff;
+    border-radius: 8px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.admin-btn:hover {
+    background: linear-gradient(135deg, rgba(0, 255, 204, 0.4) 0%, rgba(0, 102, 255, 0.4) 100%);
+    box-shadow: 0 0 15px rgba(0, 255, 204, 0.3);
+    transform: translateY(-2px);
+}
+
+.logout-btn {
+    width: auto;
+    padding: 8px 15px;
+    font-size: 0.9rem;
+    background: rgba(255, 0, 0, 0.1);
+    border: 1px solid rgba(255, 0, 0, 0.3);
+}
+
+.logout-btn:hover {
+    background: rgba(255, 0, 0, 0.3);
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+}
+
+.save-btn {
+    margin-top: 10px;
+}
+
+.error-msg {
+    color: #ff4d4d;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    min-height: 20px;
+}
+
+.status-msg {
+    color: #00ffcc;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    min-height: 20px;
+    text-align: center;
+}

@@ -70,10 +70,10 @@
             <div class="section experience">
                 <h2><i class="fas fa-server"></i> Développement FiveM</h2>
                 <div class="exp-card">
-                    <div class="exp-year">7 Ans</div>
+                    <div class="exp-year" id="exp-years-text">7 Ans</div>
                     <div class="exp-details">
-                        <h3>Expertise Serveur & UI</h3>
-                        <p>Création de scripts personnalisés, optimisation serveur, développement d'interfaces
+                        <h3 id="exp-title-text">Expertise Serveur & UI</h3>
+                        <p id="exp-desc-text">Création de scripts personnalisés, optimisation serveur, développement d'interfaces
                             interactives (UI), et gestion de bases de données. Plus de 7 ans d'expérience à façonner des
                             expériences de jeu uniques sur FiveM.</p>
                     </div>
@@ -100,7 +100,7 @@
             </div>
             <div class="song-info">
                 <div class="scrolling-text">
-                    <span class="song-title">JRK19 - DEVIN BOOKER (feat @larvfleuze)</span>
+                    <span class="song-title" id="song-title-text">JRK19 - DEVIN BOOKER (feat @larvfleuze)</span>
                 </div>
             </div>
             <button id="play-pause-btn"><i class="fas fa-play"></i></button>
@@ -116,6 +116,9 @@
     </audio>
 
     <script src="script.js"></script>
+    
+    <!-- Script optionnel pour charger les données de Firebase -->
+    <script type="module" src="fetch-data.js"></script>
 </body>
 
 </html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CypherDev | Admin Panel</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="bg-overlay"></div>
+
+    <div class="container admin-container">
+        <!-- Login Section -->
+        <div id="login-section" class="glass-card">
+            <h2><i class="fas fa-lock"></i> Connexion Admin</h2>
+            <form id="login-form">
+                <div class="input-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required placeholder="admin@cypherdev.com">
+                </div>
+                <div class="input-group">
+                    <label for="password">Mot de passe</label>
+                    <input type="password" id="password" required placeholder="••••••••">
+                </div>
+                <p id="login-error" class="error-msg"></p>
+                <button type="submit" class="admin-btn">Se connecter</button>
+            </form>
+        </div>
+
+        <!-- Dashboard Section (Hidden by default) -->
+        <div id="dashboard-section" class="glass-card" style="display: none;">
+            <div class="admin-header">
+                <h2><i class="fas fa-cogs"></i> Panel d'Administration</h2>
+                <button id="logout-btn" class="admin-btn logout-btn"><i class="fas fa-sign-out-alt"></i> Déconnexion</button>
+            </div>
+            
+            <div class="divider"></div>
+
+            <form id="portfolio-form">
+                <!-- Expérience Section -->
+                <div class="admin-section">
+                    <h3>Expérience</h3>
+                    <div class="input-group">
+                        <label for="exp-years">Années d'expérience</label>
+                        <input type="text" id="exp-years" value="7 Ans">
+                    </div>
+                    <div class="input-group">
+                        <label for="exp-title">Titre de l'expertise</label>
+                        <input type="text" id="exp-title" value="Expertise Serveur & UI">
+                    </div>
+                    <div class="input-group">
+                        <label for="exp-desc">Description de l'expérience</label>
+                        <textarea id="exp-desc" rows="4">Création de scripts personnalisés, optimisation serveur, développement d'interfaces interactives (UI), et gestion de bases de données. Plus de 7 ans d'expérience à façonner des expériences de jeu uniques sur FiveM.</textarea>
+                    </div>
+                </div>
+
+                <!-- Musique Section -->
+                <div class="admin-section">
+                    <h3>Musique (Dynamic Island)</h3>
+                    <div class="input-group">
+                        <label for="song-title">Titre de la chanson</label>
+                        <input type="text" id="song-title" value="JRK19 - DEVIN BOOKER (feat @larvfleuze)">
+                    </div>
+                </div>
+
+                <p id="save-status" class="status-msg"></p>
+                <button type="submit" class="admin-btn save-btn"><i class="fas fa-save"></i> Sauvegarder les modifications</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Firebase SDK (Version 9 modulaire) -->
+    <script type="module" src="admin.js"></script>
+</body>
+</html>
