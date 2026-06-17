@@ -106,4 +106,20 @@ document.addEventListener('DOMContentLoaded', () => {
             visualizer.classList.add('paused');
         }
     });
+
+    // --- View Counter ---
+    const viewCountEl = document.getElementById('view-count');
+    if (viewCountEl) {
+        fetch('https://api.counterapi.dev/v1/CypherDev121/portfolio/up')
+            .then(response => response.json())
+            .then(data => {
+                if(data.count) {
+                    viewCountEl.textContent = data.count;
+                }
+            })
+            .catch(err => {
+                console.error("Erreur compteur de vues :", err);
+                viewCountEl.textContent = "-";
+            });
+    }
 });
