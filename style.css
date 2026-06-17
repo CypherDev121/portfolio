@@ -361,6 +361,45 @@ body {
 
 /* Responsiveness */
 @media (max-width: 600px) {
+    #enter-btn {
+        font-size: 1.4rem;
+        padding: 10px;
+    }
+    
+    .container {
+        padding: 10px;
+    }
+    
+    .glass-card {
+        padding: 25px 15px;
+    }
+    
+    .avatar {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .username {
+        font-size: 1.8rem;
+    }
+    
+    .social-links {
+        gap: 12px;
+    }
+    
+    .social-icon {
+        width: 42px;
+        height: 42px;
+        font-size: 1.1rem;
+    }
+    
+    #dynamic-island {
+        left: 50%;
+        transform: translateX(-50%);
+        width: 90%;
+        max-width: 320px;
+    }
+
     .exp-card {
         flex-direction: column;
         text-align: center;
