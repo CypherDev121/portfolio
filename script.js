@@ -4,6 +4,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const mainContent = document.getElementById('main-content');
     const bgMusic = document.getElementById('bg-music');
     const typewriterText = document.getElementById('typewriter-text');
+    const dynamicIsland = document.getElementById('dynamic-island');
+    const playPauseBtn = document.getElementById('play-pause-btn');
+    const visualizer = document.querySelector('.visualizer');
 
     // Phrases for the typewriter effect
     const phrases = ["Développeur FiveM", ".gg/tornadohub | FiveM Développement Service", "Passionné de Code LUA"];
@@ -22,12 +25,16 @@ document.addEventListener('DOMContentLoaded', () => {
         // Add a class to button for animation
         enterBtn.style.transform = 'scale(0.95)';
 
-        // Fade out overlay and fade in main content
         setTimeout(() => {
             overlay.style.opacity = '0';
             setTimeout(() => {
                 overlay.style.display = 'none';
                 mainContent.classList.add('active');
+
+                // Show dynamic island and set playing state
+                dynamicIsland.classList.add('island-playing');
+                playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                visualizer.classList.remove('paused');
 
                 // Start typing effect only after content is visible
                 setTimeout(typeWriter, 500);
@@ -61,4 +68,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         setTimeout(typeWriter, typeSpeed);
     }
+
+    // --- Dynamic Island Logic ---
+    playPauseBtn.addEventListener('click', () => {
+        if (bgMusic.paused) {
+            bgMusic.play();
+            playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+            visualizer.classList.remove('paused');
+        } else {
+            bgMusic.pause();
+            playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+            visualizer.classList.add('paused');
+        }
+    });
 });

@@ -334,3 +334,111 @@ body {
         margin-bottom: 15px;
     }
 }
+
+/* Dynamic Island */
+#dynamic-island {
+    position: fixed;
+    top: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #000;
+    color: #fff;
+    border-radius: 30px;
+    height: 45px;
+    width: 320px;
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    z-index: 1000;
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#dynamic-island.island-playing {
+    top: 20px;
+}
+
+.island-content {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+}
+
+.album-art-container {
+    width: 25px;
+    height: 25px;
+    border-radius: 6px;
+    background: linear-gradient(135deg, var(--accent), #db2777);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.7rem;
+    flex-shrink: 0;
+}
+
+.song-info {
+    flex-grow: 1;
+    overflow: hidden;
+    position: relative;
+    height: 20px;
+}
+
+.scrolling-text {
+    position: absolute;
+    white-space: nowrap;
+    font-size: 0.85rem;
+    font-weight: 600;
+    line-height: 20px;
+    animation: scrollText 12s linear infinite;
+}
+
+@keyframes scrollText {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+}
+
+#play-pause-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    font-size: 1rem;
+    flex-shrink: 0;
+    width: 25px;
+    transition: transform 0.2s;
+    outline: none;
+}
+
+#play-pause-btn:hover {
+    transform: scale(1.1);
+}
+
+.visualizer {
+    display: flex;
+    align-items: flex-end;
+    height: 15px;
+    gap: 2px;
+}
+
+.visualizer .bar {
+    width: 3px;
+    background: var(--accent-light);
+    border-radius: 2px;
+    animation: bounce 0.5s infinite alternate;
+}
+
+.visualizer.paused .bar {
+    animation-play-state: paused;
+    height: 3px !important;
+}
+
+.visualizer .bar:nth-child(1) { height: 10px; animation-delay: 0.1s; }
+.visualizer .bar:nth-child(2) { height: 15px; animation-delay: 0.3s; }
+.visualizer .bar:nth-child(3) { height: 8px; animation-delay: 0.2s; }
+.visualizer .bar:nth-child(4) { height: 12px; animation-delay: 0.4s; }
+
+@keyframes bounce {
+    0% { height: 3px; }
+    100% { height: 15px; }
+}
