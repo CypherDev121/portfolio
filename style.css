@@ -117,7 +117,6 @@ body {
     border-radius: 50%;
     padding: 4px;
     background: linear-gradient(135deg, var(--accent-light), #db2777);
-    animation: spin 6s linear infinite;
 }
 
 .avatar img {
@@ -126,11 +125,6 @@ body {
     border-radius: 50%;
     object-fit: cover;
     background: var(--bg-dark);
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
 }
 
 .name-container {
