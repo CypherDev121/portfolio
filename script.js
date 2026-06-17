@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const typewriterText = document.getElementById('typewriter-text');
 
     // Phrases for the typewriter effect
-    const phrases = ["Développeur FiveM", "Créateur d'Expériences", "Passionné de Code LUA"];
+    const phrases = ["Développeur FiveM", ".gg/tornadohub | FiveM Développement Service", "Passionné de Code LUA"];
     let phraseIndex = 0;
     let charIndex = 0;
     let isDeleting = false;
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 overlay.style.display = 'none';
                 mainContent.classList.add('active');
-                
+
                 // Start typing effect only after content is visible
                 setTimeout(typeWriter, 500);
             }, 1000); // Wait for fade out
@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Typewriter Effect Logic ---
     function typeWriter() {
         const currentPhrase = phrases[phraseIndex];
-        
+
         if (isDeleting) {
             typewriterText.textContent = currentPhrase.substring(0, charIndex - 1);
             charIndex--;
