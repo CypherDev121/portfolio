@@ -69,6 +69,24 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(typeWriter, typeSpeed);
     }
 
+    // --- Discord Real-Time Avatar (Lanyard) ---
+    const discordId = "1508650378131144714";
+    const avatarImg = document.querySelector('.avatar img');
+    
+    fetch(`https://api.lanyard.rest/v1/users/${discordId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success && data.data.discord_user) {
+                const user = data.data.discord_user;
+                if (user.avatar) {
+                    const ext = user.avatar.startsWith('a_') ? 'gif' : 'png';
+                    avatarImg.src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.${ext}?size=256`;
+                }
+            }
+        })
+        .catch(err => console.error("Erreur de récupération Discord :", err));
+
+
     // --- Dynamic Island Logic ---
     playPauseBtn.addEventListener('click', () => {
         if (bgMusic.paused) {
