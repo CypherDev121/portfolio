@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CypherDev | Portfolio</title>
-    <link rel="stylesheet" href="style.css?v=10">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>CypherDev | Portfolio FiveM</title>
+    <link rel="stylesheet" href="style.css?v=30">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
     <div id="enter-overlay">
-        <button id="enter-btn">Développé par CypherDev Portfolio</button>
+        <button id="enter-btn">Entrer dans le portfolio</button>
     </div>
 
     <video id="bg-video" class="bg-video" autoplay loop muted playsinline>
@@ -18,18 +18,18 @@
     </video>
     <div class="bg-overlay"></div>
 
-    <main class="container" id="main-content" aria-label="Portfolio CypherDev">
-        <section class="glass-card">
+    <main class="site-shell" id="main-content" aria-label="Portfolio CypherDev">
+        <section class="hero-card glass-card">
             <div class="profile-header">
                 <div class="avatar">
-                    <img id="discord-avatar" src="https://github.com/CypherDev121.png" alt="Avatar Discord de CypherDev">
+                    <img id="discord-avatar" src="https://github.com/CypherDev121.png" alt="Avatar de CypherDev">
                 </div>
                 <div class="name-container">
                     <h1 class="username rgb-text" id="profile-name">CypherDev</h1>
-                    <div class="premium-badge" title="Premium"><i class="fas fa-gem"></i></div>
+                    <div class="premium-badge" title="Developer"><i class="fas fa-gem"></i></div>
                 </div>
                 <div class="discord-badges">
-                    <div class="dc-badge dev-badge" title="Active Developer"><i class="fas fa-code"></i></div>
+                    <div class="dc-badge dev-badge" title="Développeur FiveM"><i class="fas fa-code"></i></div>
                 </div>
                 <p class="typewriter"><span id="typewriter-text"></span><span class="cursor">|</span></p>
             </div>
@@ -40,44 +40,114 @@
                 <a href="#" class="social-icon" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
             </nav>
 
-            <div class="divider"></div>
-
-            <div class="section">
-                <h2><i class="fas fa-code"></i> Compétences</h2>
-                <div class="badges" id="skills-list">
-                    <span class="badge badge-lua">LUA</span>
-                    <span class="badge badge-html">HTML</span>
-                    <span class="badge badge-css">CSS</span>
-                    <span class="badge badge-scss">SCSS</span>
-                    <span class="badge badge-js">JS</span>
-                    <span class="badge badge-vue">VUE</span>
-                </div>
+            <div class="hero-actions">
+                <a href="#projects" class="cta-btn"><i class="fa-solid fa-folder-open"></i> Voir mes projets</a>
+                <a href="#contact" class="cta-btn secondary"><i class="fa-brands fa-discord"></i> Me contacter</a>
             </div>
 
-            <div class="divider"></div>
-
-            <div class="section experience">
-                <h2><i class="fas fa-server"></i> Développement FiveM</h2>
-                <div class="exp-card">
-                    <div class="exp-year" id="exp-years-text">7 Ans</div>
-                    <div class="exp-details">
-                        <h3 id="exp-title-text">Expertise Serveur & UI</h3>
-                        <p id="exp-desc-text">Création de scripts personnalisés, optimisation serveur, développement d'interfaces interactives (UI), et gestion de bases de données. Plus de 7 ans d'expérience à façonner des expériences de jeu uniques sur FiveM.</p>
-                    </div>
-                </div>
-            </div>
-
-            <footer class="card-footer">
-                <div class="stat-item" title="Vues totales en temps réel">
-                    <i class="fas fa-eye"></i> <span id="view-count">...</span>
+            <footer class="card-footer hero-stats">
+                <div class="stat-item" title="Vues totales">
+                    <i class="fas fa-eye"></i> <span id="view-count">0</span> vues
                 </div>
                 <div class="stat-item" title="Visiteurs actuellement sur le site">
-                    <i class="fas fa-signal"></i> <span id="live-count">...</span>
+                    <i class="fas fa-signal"></i> <span id="live-count">1 live</span>
                 </div>
                 <div class="stat-item">
                     <i class="fas fa-map-marker-alt"></i> <span id="location-text">QUEBEC, ALMA</span>
                 </div>
             </footer>
+        </section>
+
+        <section class="glass-card section-card">
+            <div class="section-title">
+                <span class="eyebrow"><i class="fa-solid fa-code"></i> Stack technique</span>
+                <h2>Compétences</h2>
+                <p>Technologies utilisées pour créer des serveurs FiveM propres, optimisés et modernes.</p>
+            </div>
+            <div class="skill-icons" id="skills-list" aria-label="Compétences techniques">
+                <article class="skill-icon-card"><img src="assets/skills/lua.png" alt="Lua"><span>LUA</span></article>
+                <article class="skill-icon-card"><img src="assets/skills/html.png" alt="HTML5"><span>HTML</span></article>
+                <article class="skill-icon-card"><img src="assets/skills/css.png" alt="CSS3"><span>CSS</span></article>
+                <article class="skill-icon-card"><img src="assets/skills/scss.png" alt="SCSS"><span>SCSS</span></article>
+                <article class="skill-icon-card"><img src="assets/skills/js.png" alt="JavaScript"><span>JS</span></article>
+                <article class="skill-icon-card"><img src="assets/skills/vue.png" alt="Vue.js"><span>VUE</span></article>
+                <article class="skill-icon-card"><img src="assets/skills/mysql.png" alt="MySQL"><span>MYSQL</span></article>
+                <article class="skill-icon-card"><img src="assets/skills/nui.png" alt="NUI FiveM"><span>NUI</span></article>
+            </div>
+        </section>
+
+        <section class="glass-card section-card experience" id="experience">
+            <div class="section-title">
+                <span class="eyebrow"><i class="fas fa-server"></i> Développement FiveM</span>
+                <h2>Expérience serveur, scripts et interface</h2>
+            </div>
+
+            <div class="exp-card large-exp">
+                <div class="exp-year" id="exp-years-text">7 Ans</div>
+                <div class="exp-details">
+                    <h3 id="exp-title-text">Expertise Serveur & UI</h3>
+                    <p id="exp-desc-text">Création de scripts personnalisés, optimisation serveur, développement d'interfaces interactives (UI), et gestion de bases de données. Plus de 7 ans d'expérience à façonner des expériences de jeu uniques sur FiveM.</p>
+                </div>
+            </div>
+
+            <div class="feature-grid">
+                <article class="feature-card"><i class="fa-solid fa-gauge-high"></i><h3>Optimisation</h3><p>Réduction du ms, nettoyage des boucles, events sécurisés, ressources plus légères.</p></article>
+                <article class="feature-card"><i class="fa-solid fa-window-maximize"></i><h3>NUI / UI</h3><p>Interfaces modernes HTML, CSS, JS/Vue pour menus, jobs, inventory, HUD et panels.</p></article>
+                <article class="feature-card"><i class="fa-solid fa-database"></i><h3>Base de données</h3><p>Gestion MySQL, sauvegardes, tables propres et données persistantes.</p></article>
+                <article class="feature-card"><i class="fa-solid fa-shield-halved"></i><h3>Sécurité</h3><p>Validation côté serveur, permissions, anti-abus et logique propre pour éviter les exploits.</p></article>
+            </div>
+        </section>
+
+        <section class="glass-card section-card" id="services">
+            <div class="section-title">
+                <span class="eyebrow"><i class="fa-solid fa-screwdriver-wrench"></i> Services</span>
+                <h2>Ce que je peux développer</h2>
+            </div>
+            <div class="services-grid">
+                <div class="service-item"><strong>Scripts jobs</strong><span>Police, EMS, mécanique, illégal, civil.</span></div>
+                <div class="service-item"><strong>HUD & menus</strong><span>HUD complet, interaction, garage, boutique.</span></div>
+                <div class="service-item"><strong>Serveur complet</strong><span>Base ESX/QBCore, économie, permissions.</span></div>
+                <div class="service-item"><strong>Debug & refonte</strong><span>Correction de bugs, logs, optimisation.</span></div>
+                <div class="service-item"><strong>Admin tools</strong><span>Panels, staff tools, dashboards privés.</span></div>
+                <div class="service-item"><strong>Expérience RP</strong><span>Systèmes pensés pour le gameplay et la stabilité.</span></div>
+            </div>
+        </section>
+
+        <section class="glass-card section-card" id="projects">
+            <div class="section-title">
+                <span class="eyebrow"><i class="fa-solid fa-layer-group"></i> Projets</span>
+                <h2>Réalisations FiveM</h2>
+            </div>
+            <div class="project-grid">
+                <article class="project-card"><div class="project-icon"><i class="fa-solid fa-users-gear"></i></div><h3>Panel Staff</h3><p>Gestion des joueurs, actions staff, logs Discord, permissions admin.</p><span>Lua · JS · MySQL</span></article>
+                <article class="project-card"><div class="project-icon"><i class="fa-solid fa-car"></i></div><h3>Système Garage</h3><p>Stockage véhicule, fourrière, clés, plaque, sauvegarde propre en base.</p><span>Lua · NUI · SQL</span></article>
+                <article class="project-card"><div class="project-icon"><i class="fa-solid fa-briefcase"></i></div><h3>Jobs custom</h3><p>Progression métier, menus UI, zones interactives et récompenses équilibrées.</p><span>ESX/QBCore · UI</span></article>
+            </div>
+        </section>
+
+        <section class="glass-card section-card timeline-card">
+            <div class="section-title">
+                <span class="eyebrow"><i class="fa-solid fa-list-check"></i> Méthode</span>
+                <h2>Workflow propre</h2>
+            </div>
+            <div class="timeline">
+                <div><b>01</b><span>Analyse du besoin et des bugs.</span></div>
+                <div><b>02</b><span>Développement propre et configurable.</span></div>
+                <div><b>03</b><span>Tests serveur, optimisation et correction.</span></div>
+                <div><b>04</b><span>Livraison avec explication d'installation.</span></div>
+            </div>
+        </section>
+
+        <section class="glass-card section-card contact-card" id="contact">
+            <div class="section-title">
+                <span class="eyebrow"><i class="fa-solid fa-paper-plane"></i> Contact</span>
+                <h2>Besoin d'un script ou d'une refonte ?</h2>
+                <p>Contacte-moi sur Discord ou GitHub pour parler de ton projet FiveM.</p>
+            </div>
+            <div class="contact-actions">
+                <a href="https://discord.com/users/1508650378131144714" target="_blank" rel="noopener" class="cta-btn"><i class="fab fa-discord"></i> Discord</a>
+                <a href="https://github.com/CypherDev121" target="_blank" rel="noopener" class="cta-btn secondary"><i class="fab fa-github"></i> GitHub</a>
+            </div>
         </section>
     </main>
 
@@ -94,7 +164,7 @@
         <source src="audio/JRK19 - DEVIN BOOKER (feat @larvfleuze).mp3" type="audio/mpeg">
     </audio>
 
-    <script src="script.js?v=10"></script>
-    <script type="module" src="fetch-data.js?v=10"></script>
+    <script src="script.js?v=30"></script>
+    <script type="module" src="fetch-data.js?v=30"></script>
 </body>
 </html>

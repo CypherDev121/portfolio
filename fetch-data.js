@@ -3,13 +3,14 @@ import {
     getFirestore,
     doc,
     onSnapshot,
-    runTransaction,
     serverTimestamp,
     setDoc,
     deleteDoc,
     collection,
     query,
-    where
+    where,
+    increment,
+    getDoc
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 import { firebaseConfig, isFirebaseConfigured } from "./firebase-config.js";
 
@@ -20,7 +21,7 @@ const defaults = {
     expTitle: "Expertise Serveur & UI",
     expDesc: "Création de scripts personnalisés, optimisation serveur, développement d'interfaces interactives (UI), et gestion de bases de données. Plus de 7 ans d'expérience à façonner des expériences de jeu uniques sur FiveM.",
     songTitle: "JRK19 - DEVIN BOOKER (feat @larvfleuze)",
-    skills: ["LUA", "HTML", "CSS", "SCSS", "JS", "VUE"]
+    skills: ["LUA", "HTML", "CSS", "SCSS", "JS", "VUE", "MYSQL", "NUI"]
 };
 
 function setText(id, value) {
@@ -28,16 +29,41 @@ function setText(id, value) {
     if (el && value !== undefined && value !== null && String(value).trim() !== "") el.textContent = value;
 }
 
+const skillImageMap = {
+    lua: "assets/skills/lua.png",
+    html: "assets/skills/html.png",
+    html5: "assets/skills/html.png",
+    css: "assets/skills/css.png",
+    css3: "assets/skills/css.png",
+    scss: "assets/skills/scss.png",
+    sass: "assets/skills/scss.png",
+    js: "assets/skills/js.png",
+    javascript: "assets/skills/js.png",
+    vue: "assets/skills/vue.png",
+    vuejs: "assets/skills/vue.png",
+    mysql: "assets/skills/mysql.png",
+    sql: "assets/skills/mysql.png",
+    nui: "assets/skills/nui.png"
+};
+
 function renderSkills(skills) {
     const list = document.getElementById("skills-list");
     if (!list || !Array.isArray(skills)) return;
+    list.className = "skill-icons";
     list.innerHTML = "";
     skills.filter(Boolean).forEach((skill) => {
-        const span = document.createElement("span");
         const safe = String(skill).trim();
-        span.className = `badge badge-${safe.toLowerCase().replace(/[^a-z0-9]/g, "") || "custom"}`;
-        span.textContent = safe.toUpperCase();
-        list.appendChild(span);
+        const key = safe.toLowerCase().replace(/[^a-z0-9]/g, "");
+        const card = document.createElement("article");
+        card.className = "skill-icon-card";
+        const img = document.createElement("img");
+        img.src = skillImageMap[key] || "assets/skills/nui.png";
+        img.alt = safe;
+        img.loading = "lazy";
+        const label = document.createElement("span");
+        label.textContent = safe.toUpperCase();
+        card.append(img, label);
+        list.appendChild(card);
     });
 }
 
@@ -52,31 +78,27 @@ function applyPortfolioData(data = {}) {
     renderSkills(merged.skills);
 }
 
-function fallbackCounter() {
+/* Fallback visible si Firebase n'est pas encore configuré.
+   Important: ce compteur est local au navigateur. Pour de vraies vues globales,
+   il faut configurer Firebase dans firebase-config.js. */
+function localCounterFallback() {
     const viewCountEl = document.getElementById("view-count");
     const liveCountEl = document.getElementById("live-count");
+    const key = "cypherdev_local_views";
+    const visitedKey = "cypherdev_view_counted_local";
+    let count = Number(localStorage.getItem(key) || "0");
+    if (!sessionStorage.getItem(visitedKey)) {
+        count += 1;
+        localStorage.setItem(key, String(count));
+        sessionStorage.setItem(visitedKey, "true");
+    }
+    if (viewCountEl) viewCountEl.textContent = count;
     if (liveCountEl) liveCountEl.textContent = "1 live";
-    if (!viewCountEl) return;
-
-    const hasVisited = sessionStorage.getItem("cypherdev_has_visited");
-    const endpoint = hasVisited
-        ? "https://api.counterapi.dev/v1/CypherDev121/portfolio"
-        : "https://api.counterapi.dev/v1/CypherDev121/portfolio/up";
-
-    fetch(endpoint)
-        .then((response) => response.json())
-        .then((data) => {
-            viewCountEl.textContent = data.count ?? "-";
-            if (!hasVisited) sessionStorage.setItem("cypherdev_has_visited", "true");
-        })
-        .catch(() => {
-            viewCountEl.textContent = "-";
-        });
 }
 
 if (!isFirebaseConfigured) {
     applyPortfolioData(defaults);
-    fallbackCounter();
+    localCounterFallback();
 } else {
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
@@ -91,36 +113,59 @@ if (!isFirebaseConfigured) {
     const statsRef = doc(db, "stats", "views");
     const viewCountEl = document.getElementById("view-count");
     const liveCountEl = document.getElementById("live-count");
-    const sessionId = sessionStorage.getItem("cypherdev_session_id") || crypto.randomUUID();
-    sessionStorage.setItem("cypherdev_session_id", sessionId);
 
+    // Compte une seule vue par onglet/session. Utilise increment() pour éviter les bugs de transaction/règles.
     if (!sessionStorage.getItem("cypherdev_view_counted")) {
-        runTransaction(db, async (transaction) => {
-            const stats = await transaction.get(statsRef);
-            const current = stats.exists() ? Number(stats.data().total || 0) : 0;
-            transaction.set(statsRef, { total: current + 1, updatedAt: serverTimestamp() }, { merge: true });
-        }).then(() => sessionStorage.setItem("cypherdev_view_counted", "true"))
-          .catch((error) => console.error("Erreur compteur Firestore:", error));
+        setDoc(statsRef, {
+            total: increment(1),
+            updatedAt: serverTimestamp()
+        }, { merge: true })
+        .then(() => sessionStorage.setItem("cypherdev_view_counted", "true"))
+        .catch((error) => {
+            console.error("Erreur compteur Firestore:", error);
+            localCounterFallback();
+        });
     }
 
     onSnapshot(statsRef, (snapshot) => {
-        if (viewCountEl) viewCountEl.textContent = snapshot.exists() ? (snapshot.data().total || 0) : 0;
+        if (viewCountEl) viewCountEl.textContent = snapshot.exists() ? Number(snapshot.data().total || 0) : 0;
+    }, (error) => {
+        console.error("Erreur lecture vues:", error);
+        localCounterFallback();
     });
 
+    const sessionId = sessionStorage.getItem("cypherdev_session_id") || crypto.randomUUID();
+    sessionStorage.setItem("cypherdev_session_id", sessionId);
     const presenceRef = doc(db, "presence", sessionId);
-    const heartbeat = () => setDoc(presenceRef, { lastSeen: Date.now(), updatedAt: serverTimestamp() }, { merge: true }).catch(console.error);
-    heartbeat();
-    const heartbeatTimer = setInterval(heartbeat, 25000);
 
-    const liveQuery = query(collection(db, "presence"), where("lastSeen", ">", Date.now() - 60000));
-    onSnapshot(liveQuery, (snapshot) => {
-        if (liveCountEl) liveCountEl.textContent = `${snapshot.size} live`;
-    }, () => {
-        if (liveCountEl) liveCountEl.textContent = "1 live";
-    });
+    const heartbeat = () => setDoc(presenceRef, {
+        lastSeen: Date.now(),
+        updatedAt: serverTimestamp(),
+        page: location.pathname
+    }, { merge: true }).catch((error) => console.error("Erreur présence:", error));
+
+    heartbeat();
+    const heartbeatTimer = setInterval(heartbeat, 15000);
+
+    let unsubscribeLive = null;
+    const refreshLiveListener = () => {
+        if (unsubscribeLive) unsubscribeLive();
+        const liveQuery = query(collection(db, "presence"), where("lastSeen", ">", Date.now() - 45000));
+        unsubscribeLive = onSnapshot(liveQuery, (snapshot) => {
+            if (liveCountEl) liveCountEl.textContent = `${Math.max(snapshot.size, 1)} live`;
+        }, (error) => {
+            console.error("Erreur live:", error);
+            if (liveCountEl) liveCountEl.textContent = "1 live";
+        });
+    };
+
+    refreshLiveListener();
+    const liveTimer = setInterval(refreshLiveListener, 15000);
 
     window.addEventListener("beforeunload", () => {
         clearInterval(heartbeatTimer);
+        clearInterval(liveTimer);
+        if (unsubscribeLive) unsubscribeLive();
         deleteDoc(presenceRef).catch(() => {});
     });
 }

@@ -104,11 +104,22 @@ if (!isFirebaseConfigured) {
 
     function listenStats(db) {
         onSnapshot(doc(db, "stats", "views"), (snapshot) => {
-            $("admin-total-views").textContent = snapshot.exists() ? (snapshot.data().total || 0) : 0;
+            $("admin-total-views").textContent = snapshot.exists() ? Number(snapshot.data().total || 0) : 0;
+        }, () => {
+            $("admin-total-views").textContent = "Erreur";
         });
-        const liveQuery = query(collection(db, "presence"), where("lastSeen", ">", Date.now() - 60000));
-        onSnapshot(liveQuery, (snapshot) => {
-            $("admin-live-users").textContent = snapshot.size;
-        });
+
+        let unsubscribeLive = null;
+        const refreshLive = () => {
+            if (unsubscribeLive) unsubscribeLive();
+            const liveQuery = query(collection(db, "presence"), where("lastSeen", ">", Date.now() - 45000));
+            unsubscribeLive = onSnapshot(liveQuery, (snapshot) => {
+                $("admin-live-users").textContent = Math.max(snapshot.size, 0);
+            }, () => {
+                $("admin-live-users").textContent = "Erreur";
+            });
+        };
+        refreshLive();
+        setInterval(refreshLive, 15000);
     }
 }

@@ -107,28 +107,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- View Counter ---
-    const viewCountEl = document.getElementById('view-count');
-    if (viewCountEl) {
-        // Vérifie si l'utilisateur a déjà visité la page durant cette session
-        const hasVisited = sessionStorage.getItem('hasVisited');
-        const endpoint = hasVisited 
-            ? 'https://api.counterapi.dev/v1/CypherDev121/portfolio' 
-            : 'https://api.counterapi.dev/v1/CypherDev121/portfolio/up';
+    // Les vues et visiteurs live sont maintenant gérés uniquement par Firebase dans fetch-data.js.
 
-        fetch(endpoint)
-            .then(response => response.json())
-            .then(data => {
-                if(data.count !== undefined) {
-                    viewCountEl.textContent = data.count;
-                    if (!hasVisited) {
-                        sessionStorage.setItem('hasVisited', 'true');
-                    }
-                }
-            })
-            .catch(err => {
-                console.error("Erreur compteur de vues :", err);
-                viewCountEl.textContent = "-";
-            });
-    }
 });
