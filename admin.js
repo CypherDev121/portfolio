@@ -1,114 +1,114 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getFirestore, doc, setDoc, onSnapshot, serverTimestamp, collection, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { firebaseConfig, ADMIN_EMAIL, isFirebaseConfigured } from "./firebase-config.js";
 
-// ==========================================
-// 🔴 ATTENTION: METTRE TA CONFIGURATION ICI
-// ==========================================
-// Crée un projet sur https://console.firebase.google.com/
-// Va dans les paramètres du projet et copie la config ici :
-const firebaseConfig = {
-    apiKey: "REMPLACE_CA_PAR_TON_API_KEY",
-    authDomain: "ton-projet.firebaseapp.com",
-    projectId: "ton-projet",
-    storageBucket: "ton-projet.appspot.com",
-    messagingSenderId: "123456789",
-    appId: "1:123456789:web:abcdef123456"
+const $ = (id) => document.getElementById(id);
+const setupSection = $("setup-section");
+const loginSection = $("login-section");
+const dashboardSection = $("dashboard-section");
+const loginForm = $("login-form");
+const logoutBtn = $("logout-btn");
+const portfolioForm = $("portfolio-form");
+const loginError = $("login-error");
+const saveStatus = $("save-status");
+
+const fields = {
+    profileName: $("profile-name"),
+    location: $("location"),
+    skills: $("skills"),
+    expYears: $("exp-years"),
+    expTitle: $("exp-title"),
+    expDesc: $("exp-desc"),
+    songTitle: $("song-title")
 };
 
-// Initialisation de Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+if (!isFirebaseConfigured) {
+    setupSection.hidden = false;
+    loginSection.hidden = true;
+    dashboardSection.hidden = true;
+} else {
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-// Éléments du DOM
-const loginSection = document.getElementById('login-section');
-const dashboardSection = document.getElementById('dashboard-section');
-const loginForm = document.getElementById('login-form');
-const logoutBtn = document.getElementById('logout-btn');
-const portfolioForm = document.getElementById('portfolio-form');
-const loginError = document.getElementById('login-error');
-const saveStatus = document.getElementById('save-status');
+    onAuthStateChanged(auth, (user) => {
+        const allowed = user && (!ADMIN_EMAIL || ADMIN_EMAIL === "ton-email-admin@example.com" || user.email === ADMIN_EMAIL);
+        if (allowed) {
+            setupSection.hidden = true;
+            loginSection.hidden = true;
+            dashboardSection.hidden = false;
+            $("admin-email").textContent = `Connecté : ${user.email}`;
+            listenPortfolio(db);
+            listenStats(db);
+        } else {
+            if (user) signOut(auth);
+            setupSection.hidden = true;
+            loginSection.hidden = false;
+            dashboardSection.hidden = true;
+        }
+    });
 
-// Champs du formulaire
-const expYearsInput = document.getElementById('exp-years');
-const expTitleInput = document.getElementById('exp-title');
-const expDescInput = document.getElementById('exp-desc');
-const songTitleInput = document.getElementById('song-title');
-
-// Vérifier l'état de connexion
-onAuthStateChanged(auth, async (user) => {
-    if (user) {
-        // Connecté
-        loginSection.style.display = 'none';
-        dashboardSection.style.display = 'block';
-        await chargerDonnees();
-    } else {
-        // Déconnecté
-        loginSection.style.display = 'block';
-        dashboardSection.style.display = 'none';
-    }
-});
-
-// Connexion
-loginForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    
-    signInWithEmailAndPassword(auth, email, password)
-        .then(() => {
-            loginError.textContent = "";
-        })
-        .catch((error) => {
+    loginForm?.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        loginError.textContent = "";
+        try {
+            await signInWithEmailAndPassword(auth, $("email").value.trim(), $("password").value);
+        } catch (error) {
             console.error(error);
             loginError.textContent = "Email ou mot de passe incorrect.";
-        });
-});
-
-// Déconnexion
-logoutBtn.addEventListener('click', () => {
-    signOut(auth);
-});
-
-// Charger les données existantes de Firestore
-async function chargerDonnees() {
-    try {
-        const docRef = doc(db, "portfolio", "data");
-        const docSnap = await getDoc(docRef);
-        
-        if (docSnap.exists()) {
-            const data = docSnap.data();
-            if(data.expYears) expYearsInput.value = data.expYears;
-            if(data.expTitle) expTitleInput.value = data.expTitle;
-            if(data.expDesc) expDescInput.value = data.expDesc;
-            if(data.songTitle) songTitleInput.value = data.songTitle;
         }
-    } catch (error) {
-        console.error("Erreur de chargement :", error);
+    });
+
+    logoutBtn?.addEventListener("click", () => signOut(auth));
+
+    portfolioForm?.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        saveStatus.textContent = "Sauvegarde en cours...";
+        saveStatus.style.color = "#fff";
+        try {
+            await setDoc(doc(db, "portfolio", "data"), {
+                profileName: fields.profileName.value.trim(),
+                location: fields.location.value.trim(),
+                skills: fields.skills.value.split(",").map((skill) => skill.trim()).filter(Boolean),
+                expYears: fields.expYears.value.trim(),
+                expTitle: fields.expTitle.value.trim(),
+                expDesc: fields.expDesc.value.trim(),
+                songTitle: fields.songTitle.value.trim(),
+                updatedAt: serverTimestamp()
+            }, { merge: true });
+            saveStatus.textContent = "Sauvegardé. Le site se met à jour en direct.";
+            saveStatus.style.color = "#00ffcc";
+            setTimeout(() => saveStatus.textContent = "", 3500);
+        } catch (error) {
+            console.error(error);
+            saveStatus.textContent = "Erreur : vérifie tes règles Firestore / ton compte admin.";
+            saveStatus.style.color = "#ff4d4d";
+        }
+    });
+
+    function listenPortfolio(db) {
+        onSnapshot(doc(db, "portfolio", "data"), (snapshot) => {
+            if (!snapshot.exists()) return;
+            const data = snapshot.data();
+            if (data.profileName) fields.profileName.value = data.profileName;
+            if (data.location) fields.location.value = data.location;
+            if (Array.isArray(data.skills)) fields.skills.value = data.skills.join(", ");
+            if (data.expYears) fields.expYears.value = data.expYears;
+            if (data.expTitle) fields.expTitle.value = data.expTitle;
+            if (data.expDesc) fields.expDesc.value = data.expDesc;
+            if (data.songTitle) fields.songTitle.value = data.songTitle;
+            if (data.updatedAt?.toDate) $("admin-updated-at").textContent = data.updatedAt.toDate().toLocaleString("fr-CA");
+        });
+    }
+
+    function listenStats(db) {
+        onSnapshot(doc(db, "stats", "views"), (snapshot) => {
+            $("admin-total-views").textContent = snapshot.exists() ? (snapshot.data().total || 0) : 0;
+        });
+        const liveQuery = query(collection(db, "presence"), where("lastSeen", ">", Date.now() - 60000));
+        onSnapshot(liveQuery, (snapshot) => {
+            $("admin-live-users").textContent = snapshot.size;
+        });
     }
 }
-
-// Sauvegarder les modifications dans Firestore
-portfolioForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    saveStatus.textContent = "Sauvegarde en cours...";
-    saveStatus.style.color = "#fff";
-    
-    try {
-        await setDoc(doc(db, "portfolio", "data"), {
-            expYears: expYearsInput.value,
-            expTitle: expTitleInput.value,
-            expDesc: expDescInput.value,
-            songTitle: songTitleInput.value
-        }, { merge: true }); // Merge true permet de ne pas écraser d'autres champs non gérés ici
-        
-        saveStatus.textContent = "Modifications sauvegardées avec succès !";
-        saveStatus.style.color = "#00ffcc";
-        setTimeout(() => saveStatus.textContent = "", 3000);
-    } catch (error) {
-        console.error("Erreur de sauvegarde :", error);
-        saveStatus.textContent = "Erreur lors de la sauvegarde.";
-        saveStatus.style.color = "#ff4d4d";
-    }
-});

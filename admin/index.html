@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CypherDev | Admin Panel</title>
+    <link rel="stylesheet" href="../style.css?v=10">
+    <link rel="stylesheet" href="../admin.css?v=10">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="admin-page">
+    <div class="bg-overlay"></div>
+    <main class="container admin-container">
+        <section id="setup-section" class="glass-card warning-card" hidden>
+            <h2><i class="fas fa-triangle-exclamation"></i> Firebase non configuré</h2>
+            <p>Colle ta config dans <strong>firebase-config.js</strong>, active Authentication Email/Password et ajoute les règles Firestore du README.</p>
+        </section>
+
+        <section id="login-section" class="glass-card" hidden>
+            <h2><i class="fas fa-lock"></i> Connexion Admin</h2>
+            <p class="admin-muted">Accès privé : seul l'email admin défini dans Firebase et les règles Firestore peut modifier le portfolio.</p>
+            <form id="login-form">
+                <div class="input-group"><label for="email">Email admin</label><input type="email" id="email" autocomplete="email" required></div>
+                <div class="input-group"><label for="password">Mot de passe</label><input type="password" id="password" autocomplete="current-password" required></div>
+                <p id="login-error" class="error-msg"></p>
+                <button type="submit" class="admin-btn"><i class="fas fa-right-to-bracket"></i> Se connecter</button>
+            </form>
+        </section>
+
+        <section id="dashboard-section" class="glass-card admin-dashboard" hidden>
+            <div class="admin-header">
+                <div>
+                    <h2><i class="fas fa-shield-halved"></i> Panel Admin Privé</h2>
+                    <p id="admin-email" class="admin-muted"></p>
+                </div>
+                <button id="logout-btn" class="admin-btn logout-btn"><i class="fas fa-sign-out-alt"></i> Déconnexion</button>
+            </div>
+            <div class="stats-grid">
+                <article class="mini-stat"><span>Vues totales</span><strong id="admin-total-views">...</strong></article>
+                <article class="mini-stat"><span>Visiteurs live</span><strong id="admin-live-users">...</strong></article>
+                <article class="mini-stat"><span>Dernière maj</span><strong id="admin-updated-at">...</strong></article>
+            </div>
+            <div class="divider"></div>
+            <form id="portfolio-form">
+                <div class="admin-section">
+                    <h3>Profil</h3>
+                    <div class="input-row">
+                        <div class="input-group"><label for="profile-name">Nom</label><input type="text" id="profile-name" value="CypherDev"></div>
+                        <div class="input-group"><label for="location">Localisation</label><input type="text" id="location" value="QUEBEC, ALMA"></div>
+                    </div>
+                    <div class="input-group"><label for="skills">Compétences, séparées par des virgules</label><input type="text" id="skills" value="LUA, HTML, CSS, SCSS, JS, VUE"></div>
+                </div>
+                <div class="admin-section">
+                    <h3>Expérience</h3>
+                    <div class="input-row">
+                        <div class="input-group"><label for="exp-years">Années</label><input type="text" id="exp-years" value="7 Ans"></div>
+                        <div class="input-group"><label for="exp-title">Titre</label><input type="text" id="exp-title" value="Expertise Serveur & UI"></div>
+                    </div>
+                    <div class="input-group"><label for="exp-desc">Description</label><textarea id="exp-desc" rows="5">Création de scripts personnalisés, optimisation serveur, développement d'interfaces interactives (UI), et gestion de bases de données. Plus de 7 ans d'expérience à façonner des expériences de jeu uniques sur FiveM.</textarea></div>
+                </div>
+                <div class="admin-section">
+                    <h3>Musique</h3>
+                    <div class="input-group"><label for="song-title">Titre affiché</label><input type="text" id="song-title" value="JRK19 - DEVIN BOOKER (feat @larvfleuze)"></div>
+                </div>
+                <p id="save-status" class="status-msg"></p>
+                <button type="submit" class="admin-btn save-btn"><i class="fas fa-save"></i> Sauvegarder en temps réel</button>
+            </form>
+        </section>
+    </main>
+    <script type="module" src="../admin.js?v=10"></script>
+</body>
+</html>
